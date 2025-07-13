@@ -8,23 +8,16 @@ import { LivroService } from './livro.service';
 describe('LivroService', () => {
   let service: LivroService; // Variable to hold the instance of LivroService
 
+  // Executed before each test
+  beforeEach(() => {
+    service = new LivroService(); // Create a new instance of LivroService before each test
+  });
+
   it('should be created', () => {
-    service = new LivroService(); // Create an instance of LivroService
     expect(service).toBeTruthy();
   });
 
-  it('should return books by genre informed', () => {
-    service = new LivroService(); // Create an instance of LivroService
-    const livrosPorGenero = service.obterLivrosPorGenero('romance'); // Call the method with a genre
-    const LivrosEsperados = livros.filter(
-      (livro) => livro.genero.id === 'romance'
-    ); // Filter expected books by genre
-
-    expect(livrosPorGenero).toEqual(LivrosEsperados); // Check if the returned books match the expected ones
-  });
-
   it('should add a new book', () => {
-    service = new LivroService(); // Create an instance of LivroService
     const novoLivro: Livro = {
       titulo: 'Novo Livro',
       autoria: 'Autor Desconhecido',
@@ -40,5 +33,14 @@ describe('LivroService', () => {
     // Verify that the book was added by checking if it exists in the list of books for the specified genre
     const livrosAtualizados = service.obterLivrosPorGenero('romance');
     expect(livrosAtualizados).toContain(novoLivro);
+  });
+
+  it('should return books by genre informed', () => {
+    const livrosPorGenero = service.obterLivrosPorGenero('romance'); // Call the method with a genre
+    const LivrosEsperados = livros.filter(
+      (livro) => livro.genero.id === 'romance'
+    ); // Filter expected books by genre
+
+    expect(livrosPorGenero).toEqual(LivrosEsperados); // Check if the returned books match the expected ones
   });
 });

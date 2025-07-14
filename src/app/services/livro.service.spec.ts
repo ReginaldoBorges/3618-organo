@@ -1,6 +1,7 @@
-import { GeneroLiterario, Livro } from '../componentes/livro/livro';
-import { livros } from '../mock-livros';
-import { ErroGeneroLiterario, LivroService } from './livro.service';
+import { TestBed } from '@angular/core/testing'; // Importa TestBed para configurar o ambiente de testes
+import { GeneroLiterario, Livro } from '../componentes/livro/livro'; // Importa as interfaces Livro e GeneroLiterario
+import { livros } from '../mock-livros'; // Importa a lista de livros mockados
+import { ErroGeneroLiterario, LivroService } from './livro.service'; // Importa a classe LivroService e o erro personalizado ErroGeneroLiterario
 
 /**
  * Este arquivo contém os testes unitários para a classe LivroService.
@@ -10,7 +11,8 @@ describe('LivroService', () => {
 
   // Executado antes de cada teste
   beforeEach(() => {
-    service = new LivroService(); // Cria uma nova instância de LivroService antes de cada teste
+    TestBed.configureTestingModule({}); // Configura o TestBed para o ambiente de testes
+    service = TestBed.inject(LivroService); // Injeta a instância do LivroService
   });
 
   it('Deve ser criado', () => {

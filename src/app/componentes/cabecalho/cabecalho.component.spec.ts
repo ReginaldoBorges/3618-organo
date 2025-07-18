@@ -21,4 +21,11 @@ describe('CabecalhoComponent', () => {
     expect(component.alt).toBeDefined();
     expect(component.src).toBeDefined();
   });
+
+  it('Deveria renderizar o conteúdo baseado nas propriedades alt e src', () => {
+    component.src = 'https://example.com/test-image.jpg';
+    component.alt = 'Imagem teste';
+
+    expect(component).toMatchSnapshot(); // Verifica se o componente renderiza corretamente com as propriedades definidas
+  });
 });

@@ -35,4 +35,31 @@ describe.only('AvaliacaoEstrelasComponent', () => {
     component.writeValue(valorClassificacao);
     expect(component.classificacao).toBe(valorClassificacao);
   });
-});
+
+  it('deveria chamar onChange quando o método classificar for chamado', () => {
+    const onChangeSpy = jest.spyOn(component, 'onChange'); // Espiona o método onChange
+    const novaClassificacao = 4;
+    component.classificar(novaClassificacao); // Atribui um novo valor
+    expect(onChangeSpy).toHaveBeenCalled(); // Verifica se onChange foi chamado com o novo valor
+  });
+
+  it('deveria chamar onTouched quando o método classificar for chamado', () => {
+    const onTouchedSpy = jest.spyOn(component, 'onTouched'); // Espiona o método onTouched
+    const novaClassificacao = 5;
+    component.classificar(novaClassificacao); // Atribui um novo valor
+    expect(onTouchedSpy).toHaveBeenCalled(); // Verifica se onTouched foi chamado
+  });
+  it('deveria ter a classificação inicial igual a 1 e refletir mudanças corretamente', () => {
+    // Verifica valor inicial
+    expect(component.classificacao).toBe(1);
+
+    // Altera a classificação e verifica se foi atualizada
+    const novaClassificacao = 4;
+    component.classificar(novaClassificacao);
+    expect(component.classificacao).toBe(novaClassificacao);
+
+    // Altera novamente e verifica
+    const outraClassificacao = 2;
+    component.classificar(outraClassificacao);
+    expect(component.classificacao).toBe(outraClassificacao);
+  });

@@ -49,17 +49,29 @@ describe.only('AvaliacaoEstrelasComponent', () => {
     component.classificar(novaClassificacao); // Atribui um novo valor
     expect(onTouchedSpy).toHaveBeenCalled(); // Verifica se onTouched foi chamado
   });
-  it('deveria ter a classificação inicial igual a 1 e refletir mudanças corretamente', () => {
-    // Verifica valor inicial
-    expect(component.classificacao).toBe(1);
 
-    // Altera a classificação e verifica se foi atualizada
-    const novaClassificacao = 4;
-    component.classificar(novaClassificacao);
-    expect(component.classificacao).toBe(novaClassificacao);
-
-    // Altera novamente e verifica
-    const outraClassificacao = 2;
-    component.classificar(outraClassificacao);
-    expect(component.classificacao).toBe(outraClassificacao);
+  it('não deveria atualizar a classificação quando a propriedade readOnly for true', () => {
+    const onChangeSpy = jest.spyOn(component, 'onChange'); // Espiona o método onChange
+    const novaClassificacao = 5;
+    component.readOnly = true; // Define readOnly como verdadeiro
+    component.classificar(novaClassificacao); // Tenta classificar com o mesmo valor
+    expect(onChangeSpy).not.toHaveBeenCalled(); // Verifica se onChange não foi chamado
+    expect(component.classificacao).not.toBe(novaClassificacao); // Verifica se a classificação foi atualizada
   });
+
+  it('deveria ignorar os valores inválidos e setar o valor padrão 1  à classificacao', () => {
+    const valoresInvalidos = [0, -1, 'abc', undefined]; // Lista de valores inválidos
+    valoresInvalidos.forEach((valorInvalido: any) => {
+      component.writeValue(valorInvalido); // Tenta escrever um valor inválido
+      expect(component.classificacao).toBe(1);
+    });
+  });
+
+  it('deveria atualizar o DOM a cada mudança da classificação', () => {
+    const novaClassificacao = 3;
+    component.classificar(novaClassificacao);
+    fixture.detectChanges(); // Atualiza o DOM após a mudança de classificação
+    const elementoPreenchida = fixture.nativeElement.querySelector('.filled'); // Seleciona o elemento estrela preenchida
+    expect(elementoPreenchida).toBeTruthy(); // Verifica se o elemento estrela preenchida existe
+  });
+});

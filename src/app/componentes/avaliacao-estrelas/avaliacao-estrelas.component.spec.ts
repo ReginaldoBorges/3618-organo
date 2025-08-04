@@ -27,7 +27,7 @@ describe.only('AvaliacaoEstrelasComponent', () => {
   });
 
   it('deveria criar o componente', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeTruthy(); // Verifica se o componente foi criado com sucesso
   });
 
   it('deveria atribuir o valor da classificação quando o método writeValue for chamado', () => {
@@ -71,7 +71,33 @@ describe.only('AvaliacaoEstrelasComponent', () => {
     const novaClassificacao = 3;
     component.classificar(novaClassificacao);
     fixture.detectChanges(); // Atualiza o DOM após a mudança de classificação
-    const elementoPreenchida = fixture.nativeElement.querySelector('.filled'); // Seleciona o elemento estrela preenchida
-    expect(elementoPreenchida).toBeTruthy(); // Verifica se o elemento estrela preenchida existe
+    const estrelasPreenchidas = fixture.nativeElement.querySelector('.filled'); // Seleciona o elemento estrela preenchida
+    expect(estrelasPreenchidas).toBeTruthy(); // Verifica se o elemento estrela preenchida existe
+  });
+
+  it('deveria iniciar com a classificação padrão igual a 1 e refletir mudanças corretamente', () => {
+    expect(component.classificacao).toBe(1); // Verifica se o valor inicial é 1
+    component.classificar(4);
+    expect(component.classificacao).toBe(4); // Verifica se a mudança foi refletida
+    fixture.detectChanges();
+    const estrelasPreenchidas =
+      fixture.nativeElement.querySelectorAll('.filled'); // Seleciona todas as estrelas preenchidas
+    expect(estrelasPreenchidas.length).toBe(4); // Verifica se o DOM reflete a nova classificação
+  });
+
+  it('deveria alterar a classificação corretamente ao clicar na terceira e depois na quinta estrela', () => {
+    // Simula o clique na terceira estrela
+    component.classificar(3); // Simula o clique na terceira estrela
+    fixture.detectChanges(); // Atualiza o DOM após a mudança de classificação
+    let estrelasPreenchidas = fixture.nativeElement.querySelectorAll('.filled'); // Seleciona todas as estrelas preenchidas
+    expect(component.classificacao).toBe(3); // Verifica se a classificação foi atualizada
+    expect(estrelasPreenchidas.length).toBe(3); // Verifica se três estrelas estão preenchidas
+
+    // Simula o clique na quinta estrela
+    component.classificar(5); // Simula o clique na quinta estrela
+    fixture.detectChanges(); // Atualiza o DOM após a mudança de classificação
+    estrelasPreenchidas = fixture.nativeElement.querySelectorAll('.filled'); // Seleciona novamente todas as estrelas preenchidas
+    expect(component.classificacao).toBe(5); // Verifica se a classificação foi atualizada para 5
+    expect(estrelasPreenchidas.length).toBe(5); // Verifica se cinco estrelas estão preenchidas
   });
 });
